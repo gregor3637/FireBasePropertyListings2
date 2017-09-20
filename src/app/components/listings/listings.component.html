@@ -1,0 +1,5 @@
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let key of mapKeys; let i = index">
+    <a [routerLink]="['/listing/' + key]">{{mapValues[i].title}}</a>
+  </li>
+</ul>
