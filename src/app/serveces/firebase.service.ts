@@ -1,6 +1,8 @@
+import 'rxjs/add/observable/fromPromise';
+
 import * as firebase from 'firebase/app';
 
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
@@ -11,9 +13,10 @@ export class FirebaseService {
 
   user: Observable<firebase.User>;
   // user: Observable<firebase.User>;
-  listings:FirebaseListObservable<any[]>;
+  listings: FirebaseListObservable<any[]>;
+  listing: FirebaseObjectObservable<any>;
 
-  constructor(private db: AngularFireDatabase,public afAuth: AngularFireAuth) { 
+  constructor(private db: AngularFireDatabase, public afAuth: AngularFireAuth) {
     this.user = afAuth.authState;
   }
 
@@ -21,7 +24,7 @@ export class FirebaseService {
     this.listings = this.db.list('listings') as FirebaseListObservable<Listing[]>;
     return this.listings;
   }
-  
+
   login() {
     console.log('firebase.ts > login');
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
@@ -34,7 +37,7 @@ export class FirebaseService {
 
   isLoggedIn() {
     const user = firebase.auth().currentUser;
-    let isLoggedIn:Boolean = false;
+    let isLoggedIn: Boolean = false;
     if (user) {
       isLoggedIn = true;
     } else {
@@ -43,15 +46,21 @@ export class FirebaseService {
 
     return isLoggedIn;
   }
+
+  getListingsDetails(id: any) {
+    var refPath = '/listings/listings/' + id;
+    var subscription = Observable.fromPromise(this.db.database.ref(refPath).once('value'));
+    return subscription;
+  }
 }
 
 
 interface Listing {
-  key?:string;
-  title?:string;
-  type?:string;
-  img?:string;
-  city?:string;
-  owner?:string;
-  bedrooms?:string;
+  key?: string;
+  title?: string;
+  type?: string;
+  img?: string;
+  city?: string;
+  owner?: string;
+  bedrooms?: string;
 }
