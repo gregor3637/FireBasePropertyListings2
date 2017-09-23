@@ -1,5 +1,8 @@
+
+
 <ul class="list-group">
+  <p myHighlight>Highlight me!</p>
   <li class="list-group-item" *ngFor="let key of mapKeys; let i = index">
     <a [routerLink]="['/listing/' + key]">{{mapValues[i].title}}</a>
-  </li>
+    </li>
 </ul>

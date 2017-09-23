@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Component, OnInit } from '@angular/core';
 
@@ -24,9 +26,26 @@ export class ListingComponent implements OnInit {
     this.firebaseService.getListingsDetails(this.id)
       .subscribe((listing) => {
         this.listing = listing.val();
-        console.log(this.listing);
+        let storageRef = firebase.storage().ref();
+
+        storageRef.child(listing.toJSON().path).getDownloadURL()
+          .then(url => {
+            console.log('#listing > > ngOnInit() > downloading image');
+            this.imageUrl = url;
+          },(err) => {
+            console.log('#listing > ngOnInit() > Err');
+            console.log(err);
+          }).catch(err => {
+            console.log('#listing > ngOnInit() > catch Err');
+            console.log(err);
+          })
       });
   }
 
+  onDeleteClick() {
+    this.firebaseService.deleteListing(this.id);
+
+    this.router.navigate(['/listings']);
+  }
 
 }

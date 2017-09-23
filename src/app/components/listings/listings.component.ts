@@ -13,24 +13,26 @@ export class ListingsComponent implements OnInit {
   mapKeys = [];
   mapValues = [];
 
-  constructor(private fbService:FirebaseService) { }
+  constructor(private fbService: FirebaseService) { }
 
   ngOnInit() {
+    console.log('Listings >> ngOnInit');
     this.fbService.getListings()
-      .subscribe((rListings)=> {
-        // console.log('rlistings > ' + JSON.stringify(rListings));
-        console.log('rListings[0] = ' + JSON.stringify(rListings.length))
-        console.log('rListings[0] = ' + JSON.stringify(Object.keys(rListings[0])))
-        console.log('rListings[0] = ' + JSON.stringify(rListings[0]["-Kdl_wRRkn7nJxgz4B54"]))
-
-
-        Object.keys(rListings[0]).forEach(key => {
-          this.mapKeys.push(key);
-          var value = rListings[0][key];
+      .subscribe((rListings) => {
+        console.log('***************Listings >> ngOnInit > onSubscribe');
+        Object.keys(rListings).forEach(key => {
+          var value = rListings[key];
+          var keyName = value['$key'];
+          this.mapKeys.push(keyName);
           this.mapValues.push(value);
-        });
           console.log(this.mapValues);
+        });
       })
   }
 
+
+  logTimes() {
+    console.log('logTimes');
+    return 55;
+  }
 }

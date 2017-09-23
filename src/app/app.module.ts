@@ -6,10 +6,12 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { EditListingComponent } from "./components/edit-listing/edit-listing.component";
 import { FirebaseService } from './serveces/firebase.service';
 import { FlashMessagesModule } from 'angular2-flash-messages'
 import { FormsModule } from '@angular/forms';
+import { HighlightDirective } from './directives/highlight.directive';
 import { HomeComponent } from "./components/home/home.component";
 import { HttpModule } from '@angular/http'
 import { ListingComponent } from "./components/listing/listing.component";
@@ -23,6 +25,7 @@ const appRoutes:Routes = [
   {path: 'listings', component: ListingsComponent },
   {path: 'listing/:id', component: ListingComponent },
   {path: 'add-listing', component: AddListingComponent },
+  {path: 'edit-listing/:id', component: EditListingComponent },
 ]
 
 @NgModule({
@@ -33,7 +36,9 @@ const appRoutes:Routes = [
     NavbarComponent,
     ListingComponent,
     AddListingComponent,
-    EditListingComponent
+    EditListingComponent,
+    HighlightDirective,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ const appRoutes:Routes = [
     RouterModule.forRoot(appRoutes),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    FlashMessagesModule
+    FlashMessagesModule,
+    CarouselModule.forRoot()
   ],
   providers: [FirebaseService,AngularFireAuth],
   bootstrap: [AppComponent]
